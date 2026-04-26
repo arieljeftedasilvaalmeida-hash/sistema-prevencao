@@ -76,6 +76,6 @@ Este projeto é para fins acadêmicos.
 
 Desenvolvidores:
 
-Ariel Jéfte
-Rayssa Mel
-Isaque Bispo
+- Ariel Jéfte
+- Rayssa Mel
+- Isaque Bispo
