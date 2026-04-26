@@ -1,0 +1,37 @@
+<!-- historico/vacinas/vacinas.html -->
+<div class="aba-vacinas">
+ 
+  <div class="grid2">
+    <div class="card-resumo">
+      <p class="r-label">Em dia</p>
+      <h2 class="r-num">2</h2>
+      <p class="r-sub">vacinas</p>
+    </div>
+    <div class="card-resumo verm">
+      <p class="r-label">Atrasadas</p>
+      <h2 class="r-num">1</h2>
+      <p class="r-sub">vacinas</p>
+    </div>
+  </div>
+ 
+  <p class="sec-titulo">Registros vacinais</p>
+  <div class="lista">
+ 
+    <div class="item" *ngFor="let v of vacinas">
+      <div class="item-ico" [class.t]="v.s === 't'" [class.e]="v.s === 'e'">
+        {{ v.s === 't' ? '✓' : '!' }}
+      </div>
+      <div class="item-info">
+        <h2 class="item-nome">{{ v.nome }}</h2>
+        <p class="item-det">{{ v.det }}</p>
+      </div>
+      <span class="badge" [class.azul]="v.s === 't'" [class.verm]="v.s === 'e'">
+        {{ v.s === 't' ? 'Em dia' : 'Atrasada' }}
+      </span>
+    </div>
+ 
+  </div>
+ 
+  <button class="btn-pdf" (click)="gerarPDF()">📄 Exportar cartão vacinal PDF</button>
+ 
+</div>

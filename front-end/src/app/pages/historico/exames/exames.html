@@ -1,0 +1,28 @@
+<div class="aba-exames">
+
+  <!-- área de upload -->
+  <div class="upload" (click)="uploadExame()">
+    <span class="upload-emoji">📎</span>
+    <h2 class="upload-titulo">Adicionar exame</h2>
+    <p class="upload-sub">Tire uma foto ou selecione um PDF</p>
+  </div>
+
+  <!-- exames salvos -->
+  <p class="sec-titulo">Exames salvos</p>
+  <div class="lista">
+    <div class="item" *ngFor="let ex of exames">
+      <span class="exame-icon">{{ ex.icon }}</span>
+      <div class="item-info">
+        <h2 class="item-nome">{{ ex.nome }}</h2>
+        <p class="item-det">{{ ex.det }}</p>
+      </div>
+      <div class="acoes">
+        <button class="acao-btn" (click)="verExame(ex)" aria-label="Visualizar">👁</button>
+        <button class="acao-btn" (click)="compartilhar(ex)" aria-label="Compartilhar">↗</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-pdf" (click)="gerarPDF()">📄 Exportar todos os exames PDF</button>
+
+</div>

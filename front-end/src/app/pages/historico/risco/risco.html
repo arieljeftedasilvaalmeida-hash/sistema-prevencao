@@ -1,0 +1,47 @@
+<!-- historico/risco/risco.html -->
+<div class="aba-risco">
+
+  <!-- card principal -->
+  <div class="card-risco medio">
+    <div class="risco-topo">
+      <span class="risco-emoji">⚠️</span>
+      <div>
+        <p class="risco-label">Nível de risco atual</p>
+        <h2 class="risco-nivel">Médio</h2>
+      </div>
+    </div>
+    <div class="termometro">
+      <div class="termo on-verde">Baixo</div>
+      <div class="termo on-lar">Médio</div>
+      <div class="termo">Alto</div>
+    </div>
+    <p class="risco-desc">Você tem alguns pontos de atenção. Siga as recomendações abaixo.</p>
+  </div>
+
+  <!-- fatores -->
+  <p class="sec-titulo">Fatores identificados</p>
+  <div class="lista">
+    <div class="fator" *ngFor="let f of fatores" [class.neg]="!f.pos" [class.pos]="f.pos">
+      <span class="fator-emoji">{{ f.emoji }}</span>
+      <div class="item-info">
+        <h2 class="item-nome">{{ f.nome }}</h2>
+        <p class="item-det">{{ f.desc }}</p>
+      </div>
+      <span class="badge" [class.verde]="f.pos" [class.verm]="!f.pos && f.nivel === 'alto'" [class.lar]="!f.pos && f.nivel === 'medio'">
+        {{ f.nivel | titlecase }}
+      </span>
+    </div>
+  </div>
+
+  <!-- recomendações -->
+  <p class="sec-titulo">Recomendações</p>
+  <div class="lista">
+    <div class="rec" *ngFor="let r of recomendacoes; let i = index">
+      <span class="rec-num">{{ i + 1 }}</span>
+      <p class="rec-txt">{{ r }}</p>
+    </div>
+  </div>
+
+  <button class="btn-pdf" (click)="gerarPDF()">📄 Exportar relatório de risco PDF</button>
+
+</div>

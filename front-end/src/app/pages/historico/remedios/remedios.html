@@ -1,0 +1,68 @@
+<!-- historico/remedios/remedios.html -->
+<div class="aba-remedios">
+ 
+  <!-- cards de resumo -->
+  <div class="grid2">
+    <div class="card-resumo">
+      <p class="r-label">Esta semana</p>
+      <h2 class="r-num">18</h2>
+      <p class="r-sub">doses tomadas</p>
+    </div>
+    <div class="card-resumo roxo">
+      <p class="r-label">Esquecidas</p>
+      <h2 class="r-num">3</h2>
+      <p class="r-sub">esta semana</p>
+    </div>
+  </div>
+ 
+  <!-- gráfico de adesão -->
+  <p class="sec-titulo">Adesão do mês</p>
+  <div class="card-adesao">
+    <div class="adesao-topo">
+      <span class="adesao-pct">86%</span>
+      <span class="badge verde">Boa adesão</span>
+    </div>
+    <div class="barra-fundo">
+      <div class="barra-fill" style="width: 86%"></div>
+    </div>
+    <div class="legenda-row">
+      <span class="leg-item"><span class="dot az"></span>Tomados (86%)</span>
+      <span class="leg-item"><span class="dot vm"></span>Esquecidos (14%)</span>
+    </div>
+  </div>
+ 
+  <!-- calendário semanal -->
+  <p class="sec-titulo">Esta semana</p>
+  <div class="cal">
+    <div class="dia-col" *ngFor="let d of semana">
+      <p class="dia-l">{{ d.l }}</p>
+      <div class="dia-c" [class.t]="d.s === 't'" [class.e]="d.s === 'e'">{{ d.n }}</div>
+    </div>
+  </div>
+  <div class="legenda-row centro">
+    <span class="leg-item"><span class="dot az"></span>Tomado</span>
+    <span class="leg-item"><span class="dot vm"></span>Esquecido</span>
+    <span class="leg-item"><span class="dot ci"></span>Pendente</span>
+  </div>
+ 
+  <!-- lista cronológica -->
+  <p class="sec-titulo">Últimos registros</p>
+  <div class="lista">
+    <div class="item" *ngFor="let r of registros">
+      <div class="item-ico" [class.t]="r.s === 't'" [class.e]="r.s === 'e'">
+        {{ r.s === 't' ? '✓' : '✕' }}
+      </div>
+      <div class="item-info">
+        <h2 class="item-nome">{{ r.nome }}</h2>
+        <p class="item-det">{{ r.det }}</p>
+      </div>
+      <span class="badge" [class.azul]="r.s === 't'" [class.verm]="r.s === 'e'">
+        {{ r.s === 't' ? 'Tomado' : 'Esquecido' }}
+      </span>
+    </div>
+  </div>
+ 
+  <button class="btn-pdf" (click)="gerarPDF()">📄 Exportar relatório PDF</button>
+ 
+</div>
+ 

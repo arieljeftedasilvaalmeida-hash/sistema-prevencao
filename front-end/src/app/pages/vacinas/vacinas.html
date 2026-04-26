@@ -1,0 +1,289 @@
+<div class="tela-vacinas">
+ 
+  <!-- cabeçalho -->
+  <header class="cabecalho">
+
+    <h2 class="titulo-vacinas">Minhas Vacinas</h2>
+
+  </header>
+ 
+  <!-- abas tomadas & pendentes -->
+  <div class="abas">
+
+    <button class="aba" [class.ativa]="abaAtiva === 'tomadas'" (click)="mudarAba('tomadas')">Tomadas</button>
+    <button class="aba" [class.ativa]="abaAtiva === 'pendentes'" (click)="mudarAba('pendentes')">Pendentes</button>
+
+  </div>
+ 
+  <!-- lista de vacinas -->
+  <main class="vacina-list">
+ 
+    <!-- ABA TOMADAS  -->
+    <ng-container *ngIf="abaAtiva === 'tomadas'">
+ 
+      <!-- Card em dia -->
+      <div class="vacina-card em-dia">
+
+        <div class="card-top">
+
+          <!-- nome da vacina e icone -->
+          <div class="vacina-nome">
+
+            <h2 class="nome">HEPATITE B</h2>
+            <span class="vacina-icon">💉</span>
+
+          </div>
+
+          <!-- status da vacina -->
+          <span class="status status-em-dia">Em dia</span>
+
+        </div>
+
+        <!-- informações -->
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Última dose</p>
+          <p class="detalhe-valor">12/03/2024</p>
+
+        </div>
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Próxima dose</p>
+          <p class="detalhe-valor destaque">10/09/2025</p>
+
+        </div>
+
+      </div>
+ 
+      <!-- Card -->
+      <div class="vacina-card em-dia">
+
+
+        <div class="card-top">
+
+          <!-- nome da vacina e icone-->
+          <div class="vacina-nome">
+
+            <h2 class="nome">FEBRE AMARELA</h2>
+            <span class="vacina-icon">💉</span>
+
+          </div>
+
+          <!-- status da vacina -->
+          <span class="status status-em-dia">Em dia</span>
+
+        </div>
+
+        <!-- informações -->
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Última dose</p>
+          <p class="detalhe-valor">05/07/2019</p>
+
+        </div>
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Dose única</p>
+          <p class="detalhe-valor">Vitalícia ✅</p>
+
+        </div>
+
+      </div>
+ 
+      <!-- Card atrasada -->
+      <div class="vacina-card atrasada">
+
+        <div class="card-top">
+          
+          <!-- nome da vacina e icone -->
+          <div class="vacina-nome">
+
+            <h2 class="nome">TÉTANO</h2>
+            <span class="vacina-icon">⚠️</span>
+
+          </div>
+
+          <!-- status da vacina -->
+          <span class="status status-atrasada">Atrasada</span>
+
+        </div>
+
+        <!-- informações -->
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Última dose</p>
+          <p class="detalhe-valor">18/01/2014</p>
+
+        </div>
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Deveria ter sido em</p>
+          <p class="detalhe-valor alerta">18/01/2024 ⚠️</p>
+
+        </div>
+
+      </div>
+ 
+    </ng-container>
+ 
+    <!--  ABA PENDENTES  -->
+    <ng-container *ngIf="abaAtiva === 'pendentes'">
+ 
+      <!-- Card pendente -->
+      <div class="vacina-card pendente">
+
+        <div class="card-top">
+
+          <!-- nome da vacina e icone -->
+          <div class="vacina-nome">
+
+            <h2 class="nome">GRIPE (INFLUENZA)</h2>
+            <span class="vacina-icon">💉</span>
+
+          </div>
+
+          <!-- status da vacina -->
+          <span class="status status-pendente">Pendente</span>
+
+        </div>
+
+        <!-- informações -->
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Prazo recomendado</p>
+          <p class="detalhe-valor destaque">Todo mês de Abril</p>
+
+        </div>
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Última dose</p>
+          <p class="detalhe-valor">Abril / 2023</p>
+
+        </div>
+
+      </div>
+ 
+      <!-- Card vacina pendente -->
+      <div class="vacina-card pendente">
+
+        <div class="card-top">
+
+          <!-- nome da vacina e icone -->
+          <div class="vacina-nome">
+
+            <h2 class="nome">COVID-19</h2>
+            <span class="vacina-icon">💉</span>
+
+          </div>
+
+          <!-- status da vacina -->
+          <span class="status status-pendente">Pendente</span>
+
+        </div>
+
+        <!-- informações -->
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Reforço recomendado</p>
+          <p class="detalhe-valor destaque">A cada 12 meses</p>
+
+        </div>
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Última dose registrada</p>
+          <p class="detalhe-valor alerta">Nenhuma ⚠️</p>
+
+        </div>
+
+      </div>
+ 
+      <!-- Card vacina atrasada -->
+      <div class="vacina-card atrasada">
+
+        <div class="card-top">
+
+          <!-- nome da vacina e icone -->
+          <div class="vacina-nome">
+
+            <h2 class="nome">HPV</h2>
+            <span class="vacina-icon">⚠️</span>
+
+          </div>
+
+          <!-- status da vacina -->
+          <span class="status status-atrasada">Atrasada</span>
+
+        </div>
+
+        <!-- informações -->
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Prazo</p>
+          <p class="detalhe-valor alerta">Venceu em 03/2024 ⚠️</p>
+
+        </div>
+        <div class="card-detalhe">
+
+          <p class="detalhe-label">Doses necessárias</p>
+          <p class="detalhe-valor">3 doses</p>
+
+        </div>
+        
+      </div>
+ 
+    </ng-container>
+ 
+  </main>
+ 
+  <!-- botão registrar vacina -->
+  <div class="registrar-wrapper">
+    <button class="btn-registrar">+ Registrar Vacina</button>
+  </div>
+ 
+  <!-- rodapé de navegação -->
+  <footer class="bottom-rodape">
+ 
+    <!-- Home → rota "/" -->
+    <button class="rodape-btn"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+ 
+    <!-- Vacinas → rota "/vacinas" -->
+    <button class="rodape-btn"
+            routerLink="/vacinas"
+            routerLinkActive="active"
+            aria-label="Vacinas">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.624 2.758L7.125 4.257L5.384 2.515l1.448-1.448L5.765-.001L0 5.764l1.067 1.067l1.448-1.448l1.742 1.742l-1.499 1.499l12.96 12.96l5.399.124l2.289 2.289l1.054-.114l-2.758-2.758l-.124-5.399zm0 1.708l6.584 6.584l-4.148 4.148l-1.676-1.674l2.08-2.08l-.88-.88l-2.08 2.08l-1.55-1.55l2.08-2.08l-.88-.88l-2.08 2.08L4.48 8.62z"/></svg>
+    </button>
+ 
+    <!-- Adicionar → rota "/medicamentos" -->
+    <button class="rodape-btn add-btn"
+            routerLink="/medicamentos"
+            routerLinkActive="active"
+            aria-label="Adicionar">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </button>
+ 
+    <!-- Histórico → rota "/historico" -->
+    <button class="rodape-btn"
+            routerLink="/historico"
+            routerLinkActive="active"
+            aria-label="Histórico">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    </button>
+ 
+    <!-- Perfil → rota "/perfil" -->
+    <button class="rodape-btn"
+            routerLink="/perfil"
+            routerLinkActive="active"
+            aria-label="Perfil">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+    </button>
+ 
+  </footer>
+ 
+</div>

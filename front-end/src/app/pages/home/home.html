@@ -1,0 +1,194 @@
+<div class="tela-home">
+ 
+  <!-- cabecalho -->
+  <header class="cabecalho">
+    <h2 class="next-med">Próxima medicação<br>em 15 minutos</h2>
+  </header>
+ 
+  <!-- lista de medicamentos -->
+  <main class="med-list">
+ 
+    <!-- Card (ativo — mostra botões) -->
+    <div class="med-card ativo">
+
+        <!-- informações no topo do card -->  
+        <div class="card-top">
+
+            <!-- nome do medicamento e ícone -->
+            <div class="med-nome">
+
+            <h2 class="nome">DIPIRONA</h2>
+            <span class="med-icon">💊</span>
+
+            </div>
+
+        </div>
+
+        <!-- hora e check -->
+        <div class="hora-e-check">
+
+            <!-- hora da medicação -->
+            <p class="med-time">10:00</p>
+
+            <!-- dia da semana & botão de Check-->
+            <div class="med-right">
+
+                <!-- dia da semana -->  
+                <p class="med-days">D S T Q Q S S</p>
+
+                <!-- botão de Check-->
+                <label class="toggle">
+
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+      
+
+        
+        <!-- botões tomar e adiar -->
+        <div class="actions-bottom">
+
+          <button class="btn btn-take">Tomar</button>
+          <button class="btn btn-snooze">Adiar</button>
+          
+        </div>
+
+
+    </div>
+ 
+    <!-- Card -->
+    <div class="med-card">
+      
+      <!-- informações no topo do card -->  
+      <div class="card-top">
+
+        <!-- nome do medicamento e ícone -->
+        <div class="med-nome">
+
+          <h2 class="nome">ROACUTAN</h2>
+          <span class="med-icon">💊</span>
+
+        </div>
+
+        <!-- dia da semana & botão de Check-->
+        <div class="med-right">
+
+          <!-- dia da semana -->  
+          <p class="med-days">D T Q S</p>
+
+          <!-- botão de Check-->
+          <label class="toggle">
+
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- hora da medicação -->
+      <div class="card-hora">
+
+        <p class="med-time">18:15</p>
+
+      </div>
+
+    </div>
+ 
+    <!-- Card -->
+    <div class="med-card">
+
+      <!-- informações no topo do card -->  
+      <div class="card-top">
+
+        <!-- nome do medicamento e ícone -->
+        <div class="med-nome">
+
+          <h2 class="nome">XULTOPHY</h2>
+          <span class="med-icon">💉</span>
+
+        </div>
+
+        <!-- dia da semana & botão de Check-->
+        <div class="med-right">
+
+          <!-- dia da semana -->
+          <p class="med-days">D S T Q Q S S</p>
+
+          <!-- botão de Check-->
+          <label class="toggle">
+
+            <input type="checkbox">
+            <span class="slider"></span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- hora da medicação -->
+      <div class="card-hora">
+
+        <p class="med-time">09:50</p>
+
+      </div>
+
+    </div>
+ 
+  </main>
+ 
+  <!-- rodapé de navegação -->
+  <footer class="bottom-rodape">
+ 
+    <!-- Home → rota "/" -->
+    <button class="rodape-btn"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+ 
+    <!-- Vacinas → rota "/vacinas" -->
+    <button class="rodape-btn"
+            routerLink="/vacinas"
+            routerLinkActive="active"
+            aria-label="Vacinas">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.624 2.758L7.125 4.257L5.384 2.515l1.448-1.448L5.765-.001L0 5.764l1.067 1.067l1.448-1.448l1.742 1.742l-1.499 1.499l12.96 12.96l5.399.124l2.289 2.289l1.054-.114l-2.758-2.758l-.124-5.399zm0 1.708l6.584 6.584l-4.148 4.148l-1.676-1.674l2.08-2.08l-.88-.88l-2.08 2.08l-1.55-1.55l2.08-2.08l-.88-.88l-2.08 2.08L4.48 8.62z"/></svg>
+    </button>
+ 
+    <!-- Adicionar → rota "/medicamentos" -->
+    <button class="rodape-btn add-btn"
+            routerLink="/medicamentos"
+            routerLinkActive="active"
+            aria-label="Adicionar">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </button>
+ 
+    <!-- Histórico → rota "/historico" -->
+    <button class="rodape-btn"
+            routerLink="/historico"
+            routerLinkActive="active"
+            aria-label="Histórico">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    </button>
+ 
+    <!-- Perfil → rota "/perfil" -->
+    <button class="rodape-btn"
+            routerLink="/perfil"
+            routerLinkActive="active"
+            aria-label="Perfil">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+    </button>
+ 
+  </footer>
+ 
+</div>

@@ -1,0 +1,224 @@
+<!-- perfil.html -->
+<div class="tela-perfil">
+ 
+  <!-- cabeçalho -->
+  <header class="cabecalho">
+
+    <h2 class="titulo">Meu Perfil</h2>
+
+  </header>
+ 
+  <!-- conteúdo com scroll -->
+  <main class="conteudo">
+ 
+    <!-- foto e nome -->
+    <div class="perfil-topo">
+      
+      <div class="foto-wrapper" (click)="trocarFoto()">
+
+        <div class="foto-avatar">{{ iniciais }}</div>
+        <span class="foto-edit">✏️</span>
+
+      </div>
+      
+      <h2 class="perfil-nome">{{ usuario.nome }}</h2>
+      <p class="perfil-email">{{ usuario.email }}</p>
+ 
+    </div>
+ 
+    <!-- dados pessoais -->
+    <p class="sec-titulo">Dados pessoais</p>
+    
+    <div class="card-secao">
+      
+      <!-- Idade -->
+      <div class="dado-item">
+
+        <p class="dado-label">Idade</p>
+        <p class="dado-valor">{{ usuario.idade }} anos</p>
+
+      </div>
+ 
+      <div class="divisor"></div>
+      
+      <!-- Tipo sanguíneo -->
+      <div class="dado-item">
+
+        <p class="dado-label">Tipo sanguíneo</p>
+        <p class="dado-valor destaque">{{ usuario.tipoSanguineo }}</p>
+
+      </div>
+ 
+      <div class="divisor"></div>
+ 
+      <!-- Peso -->
+      <div class="dado-item">
+
+        <p class="dado-label">Peso</p>
+        <p class="dado-valor">{{ usuario.peso }} kg</p>
+
+      </div>
+ 
+      <div class="divisor"></div>
+ 
+      <!-- Altura -->
+      <div class="dado-item">
+
+        <p class="dado-label">Altura</p>
+        <p class="dado-valor">{{ usuario.altura }} cm</p>
+
+      </div>
+ 
+    </div>
+    
+    <!-- botão de editar -->
+    <button class="btn-editar" (click)="editarDados()">✏️ Editar dados pessoais</button>
+ 
+    <!-- preferências -->
+    <p class="sec-titulo">Preferências</p>
+ 
+    <!-- card de preferências -->
+    <div class="card-secao">
+ 
+      <!-- Notificações -->
+      <div class="pref-item">
+
+        <div class="pref-info">
+
+          <h2 class="pref-nome">Notificações</h2>
+          <p class="pref-desc">Receber alertas de medicamentos</p>
+
+        </div>
+
+        <label class="toggle">
+
+          <input type="checkbox" [checked]="prefs.notificacoes" (change)="prefs.notificacoes = !prefs.notificacoes">
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+ 
+      <div class="divisor"></div>
+ 
+      <!-- Horário padrão -->
+      <div class="pref-item" (click)="editarHorario()">
+
+        <div class="pref-info">
+
+          <h2 class="pref-nome">Horário padrão</h2>
+          <p class="pref-desc">Lembrete diário às {{ prefs.horarioPadrao }}</p>
+
+        </div>
+
+        <span class="pref-seta">›</span>
+
+      </div>
+ 
+      <div class="divisor"></div>
+ 
+      <!-- Tema -->
+      <div class="pref-item">
+
+        <div class="pref-info">
+
+          <h2 class="pref-nome">Tema escuro</h2>
+          <p class="pref-desc">Alternar entre claro e escuro</p>
+
+        </div>
+
+        <label class="toggle">
+
+          <input type="checkbox" [checked]="prefs.temaEscuro" (change)="prefs.temaEscuro = !prefs.temaEscuro">
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+ 
+      <div class="divisor"></div>
+ 
+      <!-- Acessibilidade -->
+      <div class="pref-item">
+
+        <div class="pref-info">
+
+          <h2 class="pref-nome">Fonte maior</h2>
+          <p class="pref-desc">Aumentar tamanho do texto</p>
+
+        </div>
+
+        <label class="toggle">
+
+          <input type="checkbox" [checked]="prefs.fonteMaior" (change)="prefs.fonteMaior = !prefs.fonteMaior">
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+ 
+      <div class="divisor"></div>
+ 
+      <!-- Idioma -->
+      <div class="pref-item" (click)="editarIdioma()">
+
+        <div class="pref-info">
+
+          <h2 class="pref-nome">Idioma</h2>
+          <p class="pref-desc">{{ prefs.idioma }}</p>
+
+        </div>
+
+        <span class="pref-seta">›</span>
+
+      </div>
+ 
+    </div>
+ 
+    <!-- botão sair -->
+    <button class="btn-sair" (click)="sair()">Sair da conta</button>
+ 
+  </main>
+ 
+  <!-- rodapé de navegação -->
+  <footer class="bottom-rodape">
+ 
+    <button class="rodape-btn"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn"
+            routerLink="/vacinas"
+            routerLinkActive="active"
+            aria-label="Vacinas">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.624 2.758L7.125 4.257L5.384 2.515l1.448-1.448L5.765-.001L0 5.764l1.067 1.067l1.448-1.448l1.742 1.742l-1.499 1.499l12.96 12.96l5.399.124l2.289 2.289l1.054-.114l-2.758-2.758l-.124-5.399zm0 1.708l6.584 6.584l-4.148 4.148l-1.676-1.674l2.08-2.08l-.88-.88l-2.08 2.08l-1.55-1.55l2.08-2.08l-.88-.88l-2.08 2.08L4.48 8.62z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn add-btn"
+            routerLink="/medicamentos"
+            routerLinkActive="active"
+            aria-label="Adicionar">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn"
+            routerLink="/historico"
+            routerLinkActive="active"
+            aria-label="Histórico">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn"
+            routerLink="/perfil"
+            routerLinkActive="active"
+            aria-label="Perfil">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+    </button>
+ 
+  </footer>
+ 
+</div>

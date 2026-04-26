@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Konkhmer+Sleokchher&family=Baloo+2:wght@400;500;600;700;800&family=Baloo:wght@400;700&display=swap');
+ 
+ 
+/* ─── VARIÁVEIS GLOBAIS ────────────────────────────────────────────── */
+:root {
+  --color-primary:    #3498DB;
+  --color-secondary:  #8E44AD;
+  --color-background: #FFFFFF;
+  --color-gray:       #D9D9D9;
+  --color-text:       #2C3E50;
+ 
+  --font-title:    'Konkhmer Sleokchher', Arial, sans-serif; /* h1 */
+  --font-subtitle: 'Baloo', cursive;                         /* h2 */
+  --font-text:     'Baloo 2', cursive;                       /* p  */
+  --font-default:  Arial, sans-serif;                        /* padrão */
+}
+ 
+ 
+/* ─── RESET GLOBAL ─────────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ 
+ 
+/* ─── BASE DO SITE ─────────────────────────────────────────────────── */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-default);
+}
+ 
+ 
+/* ─── TIPOGRAFIA ───────────────────────────────────────────────────── */
+h1 {
+  font-family: var(--font-title);
+}
+ 
+h2 {
+  font-family: var(--font-subtitle);
+}
+ 
+p {
+  font-family: var(--font-text);
+}

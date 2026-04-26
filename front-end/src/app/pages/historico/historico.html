@@ -1,0 +1,84 @@
+<!-- historico/historico.html -->
+<div class="tela-historico">
+ 
+  <!-- cabeçalho -->
+  <header class="cabecalho">
+    <h2 class="titulo">Histórico</h2>
+  </header>
+ 
+  <!-- abas de navegação interna -->
+  <div class="abas">
+ 
+    <button class="aba"
+            routerLink="remedios"
+            routerLinkActive="ativa">
+      Remédios
+    </button>
+ 
+    <button class="aba"
+            routerLink="vacinas"
+            routerLinkActive="ativa">
+      Vacinas
+    </button>
+ 
+    <button class="aba"
+            routerLink="risco"
+            routerLinkActive="ativa">
+      Risco
+    </button>
+ 
+    <button class="aba"
+            routerLink="exames"
+            routerLinkActive="ativa">
+      Exames
+    </button>
+ 
+  </div>
+ 
+  <!-- conteúdo da aba ativa (componente filho) -->
+  <main class="conteudo">
+    <router-outlet />
+  </main>
+ 
+  <!-- rodapé de navegação -->
+  <footer class="bottom-rodape">
+ 
+    <button class="rodape-btn"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn"
+            routerLink="/vacinas"
+            routerLinkActive="active"
+            aria-label="Vacinas">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.624 2.758L7.125 4.257L5.384 2.515l1.448-1.448L5.765-.001L0 5.764l1.067 1.067l1.448-1.448l1.742 1.742l-1.499 1.499l12.96 12.96l5.399.124l2.289 2.289l1.054-.114l-2.758-2.758l-.124-5.399zm0 1.708l6.584 6.584l-4.148 4.148l-1.676-1.674l2.08-2.08l-.88-.88l-2.08 2.08l-1.55-1.55l2.08-2.08l-.88-.88l-2.08 2.08L4.48 8.62z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn add-btn"
+            routerLink="/medicamentos"
+            routerLinkActive="active"
+            aria-label="Adicionar">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn"
+            routerLink="/historico"
+            routerLinkActive="active"
+            aria-label="Histórico">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    </button>
+ 
+    <button class="rodape-btn"
+            routerLink="/perfil"
+            routerLinkActive="active"
+            aria-label="Perfil">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+    </button>
+ 
+  </footer>
+ 
+</div>

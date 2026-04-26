@@ -1,0 +1,231 @@
+/* host */
+:host {
+  display: block;
+  height: 100dvh;
+  background-color: var(--color-background);
+}
+ 
+/* tela vacinas */
+.tela-vacinas {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+ 
+/* cabeçalho */
+.cabecalho {
+  padding: 44px 24px 12px;
+  text-align: center;
+}
+ 
+/* ttulo cabeçalho */
+.titulo-vacinas {
+  font-size: 1.5rem;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+ 
+/* ábas tomadas & pendentes */
+.abas {
+  display: flex;
+  position: relative;
+  margin: 8px 16px 0;
+  background: var(--color-gray);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+ 
+.aba {
+  flex: 1;
+  font-family: var(--font-text);       
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9px;
+  padding: 8px 0;
+  cursor: pointer;
+  background: transparent;
+  color: #999;
+  transition: background 0.22s, color 0.22s;
+  position: relative;
+  z-index: 1;
+}
+ 
+.aba.ativa {
+  background: var(--color-background);
+  color: var(--color-text);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+}
+ 
+/* lista de vacinas */
+.vacina-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: none;
+}
+.vacina-list::-webkit-scrollbar { display: none; }
+ 
+/* card */
+.vacina-card {
+  background: var(--color-gray);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.25s;
+  border-left: 4px solid transparent;
+}
+ 
+/* cor lateral  */
+.vacina-card.em-dia   { border-left-color: var(--color-primary); }
+.vacina-card.atrasada { border-left-color: #e74c3c; }
+.vacina-card.pendente { border-left-color: #f39c12; }
+ 
+/* oculto (aba inativa) */
+.oculto { display: none; }
+ 
+/* topo do card */
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+ 
+/* nome da vacina e ícone */
+.vacina-nome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+ 
+/* nome da vacina */
+.nome {
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+}
+ 
+/* ícone da vacina */
+.vacina-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+ 
+/* informações */
+.card-detalhe {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+ 
+.detalhe-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #999;
+  white-space: nowrap;
+}
+ 
+.detalhe-valor {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: right;
+}
+ 
+.detalhe-valor.destaque { color: var(--color-primary); }
+.detalhe-valor.alerta   { color: #e74c3c; }
+ 
+/* status */
+.status {
+  font-family: var(--font-text);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+ 
+.status-em-dia   { background: rgba(52,152,219,0.15);  color: var(--color-primary); }
+.status-atrasada { background: rgba(231,76,60,0.13);   color: #e74c3c; }
+.status-pendente { background: rgba(243,156,18,0.15);  color: #e67e22; }
+ 
+/* botão registrar vacina */
+.registrar-wrapper {
+  padding: 8px 16px 10px;
+}
+ 
+.btn-registrar {
+  font-family: var(--font-text);
+  width: 100%;
+  padding: 12px;
+  border: 2px dashed var(--color-primary);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+ 
+.btn-registrar:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+ 
+/* rodapé de navegação */
+.bottom-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--color-gray);
+  padding: 10px 8px 22px;
+  border-top: 1px solid var(--color-gray);
+}
+ 
+.rodape-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--color-text);
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.rodape-btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+ 
+.rodape-btn.active {
+  color: var(--color-primary);
+}
+ 
+.add-btn {
+  background: var(--color-text);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  color: #fff !important;
+  padding: 0;
+}
+ 
+.add-btn svg {
+  width: 22px;
+  height: 22px;
+}
