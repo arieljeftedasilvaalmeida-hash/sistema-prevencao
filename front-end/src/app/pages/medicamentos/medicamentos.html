@@ -1,1 +1,194 @@
-<p>medicamentos works!</p>
+<div class="tela-medicamentos">
+
+  <!-- cabeçalho -->
+  <header class="cabecalho">
+    <h2 class="titulo">Adicionar</h2>
+  </header>
+
+  <!-- conteúdo principal -->
+  <main class="conteudo">
+
+    <!-- cards de escolha -->
+    <p class="sec-titulo">O que deseja cadastrar?</p>
+
+    <div class="escolha-grid">
+
+      <div class="escolha-card" (click)="abrirModal('medicamento')">
+        <span class="escolha-emoji">💊</span>
+        <h2 class="escolha-nome">Medicamento</h2>
+        <p class="escolha-desc">Cadastre um remédio com horário e dias</p>
+      </div>
+
+      <div class="escolha-card" (click)="abrirModal('vacina')">
+        <span class="escolha-emoji">💉</span>
+        <h2 class="escolha-nome">Vacina</h2>
+        <p class="escolha-desc">Registre uma vacina tomada ou pendente</p>
+      </div>
+
+    </div>
+
+    <!-- dica -->
+    <div class="dica">
+      <span class="dica-emoji">💡</span>
+      <p class="dica-txt">Toque em um card para começar o cadastro.</p>
+    </div>
+
+  </main>
+
+  <!-- ── MODAL ── -->
+  <div class="modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <!-- cabeçalho do modal -->
+      <div class="modal-header">
+        <h2 class="modal-titulo">
+          {{ tipo === 'medicamento' ? '💊 Novo Medicamento' : '💉 Nova Vacina' }}
+        </h2>
+        <button class="modal-fechar" (click)="fecharModal()">✕</button>
+      </div>
+
+      <!-- ── FORMULÁRIO MEDICAMENTO ── -->
+      <div class="modal-body" *ngIf="tipo === 'medicamento'">
+
+        <!-- nome -->
+        <div class="campo">
+          <label class="campo-label">Nome do medicamento</label>
+          <input class="campo-input" type="text" placeholder="Ex: Dipirona" [(ngModel)]="med.nome">
+        </div>
+
+        <!-- ícone -->
+        <div class="campo">
+          <label class="campo-label">Ícone</label>
+          <div class="icone-grid">
+            <button class="icone-btn" *ngFor="let ic of icones"
+                    [class.selecionado]="med.icone === ic"
+                    (click)="med.icone = ic">
+              {{ ic }}
+            </button>
+          </div>
+        </div>
+
+        <!-- dosagem -->
+        <div class="campo">
+          <label class="campo-label">Dosagem</label>
+          <input class="campo-input" type="text" placeholder="Ex: 500mg, 1 comprimido" [(ngModel)]="med.dosagem">
+        </div>
+
+        <!-- horário -->
+        <div class="campo">
+          <label class="campo-label">Horário</label>
+          <input class="campo-input" type="time" [(ngModel)]="med.horario">
+        </div>
+
+        <!-- dias da semana -->
+        <div class="campo">
+          <label class="campo-label">Dias da semana</label>
+          <div class="dias-grid">
+            <button class="dia-btn" *ngFor="let d of diasSemana"
+                    [class.selecionado]="med.dias.includes(d.valor)"
+                    (click)="toggleDia(d.valor)">
+              {{ d.letra }}
+            </button>
+          </div>
+        </div>
+
+        <!-- observações -->
+        <div class="campo">
+          <label class="campo-label">Observações</label>
+          <textarea class="campo-input campo-textarea"
+                    placeholder="Ex: Tomar após as refeições"
+                    [(ngModel)]="med.obs"></textarea>
+        </div>
+
+      </div>
+
+      <!-- ── FORMULÁRIO VACINA ── -->
+      <div class="modal-body" *ngIf="tipo === 'vacina'">
+
+        <!-- nome -->
+        <div class="campo">
+          <label class="campo-label">Nome da vacina</label>
+          <input class="campo-input" type="text" placeholder="Ex: Hepatite B" [(ngModel)]="vac.nome">
+        </div>
+
+        <!-- status -->
+        <div class="campo">
+          <label class="campo-label">Status</label>
+          <div class="status-grid">
+            <button class="status-btn azul"  [class.selecionado]="vac.status === 'tomada'"   (click)="vac.status = 'tomada'">✓ Tomada</button>
+            <button class="status-btn lar"   [class.selecionado]="vac.status === 'pendente'" (click)="vac.status = 'pendente'">⏳ Pendente</button>
+            <button class="status-btn verm"  [class.selecionado]="vac.status === 'atrasada'" (click)="vac.status = 'atrasada'">⚠️ Atrasada</button>
+          </div>
+        </div>
+
+        <!-- data da dose -->
+        <div class="campo">
+          <label class="campo-label">Data da dose</label>
+          <input class="campo-input" type="date" [(ngModel)]="vac.data">
+        </div>
+
+        <!-- número da dose -->
+        <div class="campo">
+          <label class="campo-label">Dose</label>
+          <input class="campo-input" type="text" placeholder="Ex: 1ª dose, Dose única, Reforço" [(ngModel)]="vac.dose">
+        </div>
+
+        <!-- próxima dose -->
+        <div class="campo">
+          <label class="campo-label">Próxima dose (opcional)</label>
+          <input class="campo-input" type="date" [(ngModel)]="vac.proxima">
+        </div>
+
+      </div>
+
+      <!-- botão salvar -->
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="fecharModal()">Cancelar</button>
+        <button class="btn-salvar"   (click)="salvar()">Salvar</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- rodapé de navegação -->
+  <footer class="bottom-rodape">
+
+    <button class="rodape-btn"
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            aria-label="Home">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+
+    <button class="rodape-btn"
+            routerLink="/vacinas"
+            routerLinkActive="active"
+            aria-label="Vacinas">
+      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.624 2.758L7.125 4.257L5.384 2.515l1.448-1.448L5.765-.001L0 5.764l1.067 1.067l1.448-1.448l1.742 1.742l-1.499 1.499l12.96 12.96l5.399.124l2.289 2.289l1.054-.114l-2.758-2.758l-.124-5.399zm0 1.708l6.584 6.584l-4.148 4.148l-1.676-1.674l2.08-2.08l-.88-.88l-2.08 2.08l-1.55-1.55l2.08-2.08l-.88-.88l-2.08 2.08L4.48 8.62z"/></svg>
+    </button>
+
+    <button class="rodape-btn add-btn"
+            routerLink="/medicamentos"
+            routerLinkActive="active"
+            aria-label="Medicamentos">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    </button>
+
+    <button class="rodape-btn"
+            routerLink="/historico"
+            routerLinkActive="active"
+            aria-label="Histórico">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+    </button>
+
+    <button class="rodape-btn"
+            routerLink="/perfil"
+            routerLinkActive="active"
+            aria-label="Perfil">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+    </button>
+
+  </footer>
+
+</div>
