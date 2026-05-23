@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+// medicamentos.ts
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MedicamentoService } from '../../services/medicamento.service';
 
 @Component({
   selector: 'app-medicamentos',
@@ -12,7 +14,9 @@ import { RouterModule } from '@angular/router';
 })
 export class Medicamentos {
 
-  // ── Modal ──
+  // inject() em vez de constructor — obrigatório no Angular 21
+  private service = inject(MedicamentoService);
+
   modalAberto = false;
   tipo: 'medicamento' | 'vacina' = 'medicamento';
 
@@ -26,10 +30,8 @@ export class Medicamentos {
     this.resetar();
   }
 
-  // ── Ícones disponíveis ──
   icones = ['💊', '💉', '🩺', '🧴', '🩹', '💧', '🌡️', '🧪'];
 
-  // ── Dias da semana ──
   diasSemana = [
     { letra: 'D', valor: 'dom' },
     { letra: 'S', valor: 'seg' },
@@ -40,7 +42,6 @@ export class Medicamentos {
     { letra: 'S', valor: 'sab' },
   ];
 
-  // ── Formulário medicamento ──
   med = {
     nome:    '',
     icone:   '💊',
@@ -59,7 +60,6 @@ export class Medicamentos {
     }
   }
 
-  // ── Formulário vacina ──
   vac = {
     nome:    '',
     status:  'tomada' as 'tomada' | 'pendente' | 'atrasada',
@@ -68,28 +68,38 @@ export class Medicamentos {
     proxima: '',
   };
 
-  // ── Salvar ──
   salvar() {
     if (this.tipo === 'medicamento') {
       if (!this.med.nome || !this.med.horario) {
         alert('Preencha ao menos o nome e o horário.');
         return;
       }
-      console.log('Medicamento salvo:', this.med);
-      // Aqui você integrará com seu serviço/banco de dados
+      this.service.adicionarMedicamento(this.med)
+        .then(() => {
+          alert('Medicamento adicionado com sucesso!');
+          this.fecharModal();
+        })
+        .catch((erro) => {
+          console.error(erro);
+          alert('Erro ao salvar medicamento.');
+        });
     } else {
       if (!this.vac.nome) {
-        alert('Preencha o nome da vacina.');
+        alert('Preencha ao menos o nome da vacina.');
         return;
       }
-      console.log('Vacina salva:', this.vac);
-      // Aqui você integrará com seu serviço/banco de dados
+      this.service.adicionarVacina(this.vac)
+        .then(() => {
+          alert('Vacina adicionada com sucesso!');
+          this.fecharModal();
+        })
+        .catch((erro) => {
+          console.error(erro);
+          alert('Erro ao salvar vacina.');
+        });
     }
-    alert(`${this.tipo === 'medicamento' ? 'Medicamento' : 'Vacina'} cadastrado com sucesso! ✅`);
-    this.fecharModal();
   }
 
-  // ── Resetar formulários ──
   resetar() {
     this.med = { nome: '', icone: '💊', dosagem: '', horario: '', dias: [], obs: '' };
     this.vac = { nome: '', status: 'tomada', data: '', dose: '', proxima: '' };

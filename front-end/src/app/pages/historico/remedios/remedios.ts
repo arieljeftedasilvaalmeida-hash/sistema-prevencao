@@ -1,7 +1,10 @@
 // historico/remedios/remedios.ts
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
- 
+import { MedicamentoService, RegistroRemedio } from '../../../services/medicamento.service';
+import { Subscription } from 'rxjs';
+import { Timestamp } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-historico-remedios',
   standalone: true,
@@ -9,26 +12,114 @@ import { CommonModule } from '@angular/common';
   templateUrl: './remedios.html',
   styleUrl: './remedios.css',
 })
-export class HistoricoRemedios {
- 
-  semana = [
-    { l: 'D', n: 20, s: 't' },
-    { l: 'S', n: 21, s: 't' },
-    { l: 'T', n: 22, s: 'e' },
-    { l: 'Q', n: 23, s: 't' },
-    { l: 'Q', n: 24, s: 't' },
-    { l: 'S', n: 25, s: 'e' },
-    { l: 'S', n: 26, s: 'p' },
-  ];
- 
-  registros = [
-    { nome: 'Dipirona', det: 'Hoje · 10:02',  s: 't' },
-    { nome: 'Roacutan', det: 'Ontem · 18:15', s: 'e' },
-    { nome: 'Xultophy', det: 'Ontem · 09:50', s: 't' },
-    { nome: 'Dipirona', det: '22/04 · 10:05', s: 't' },
-  ];
- 
+export class HistoricoRemedios implements OnInit, OnDestroy {
+
+  private service = inject(MedicamentoService);
+  private cdr     = inject(ChangeDetectorRef);
+  private sub!: Subscription;
+
+  registros: RegistroRemedio[] = [];
+
+  get semanaInicio(): Date {
+    const d = new Date();
+    d.setDate(d.getDate() - 6);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
+  get registrosSemana(): RegistroRemedio[] {
+    const inicio = this.semanaInicio.getTime();
+    return this.registros.filter(r => this.toDate(r.dataHora).getTime() >= inicio);
+  }
+
+  get tomadosSemana():    number { return this.registrosSemana.filter(r => r.acao === 'tomado').length; }
+  get esquecidosSemana(): number { return this.registrosSemana.filter(r => r.acao === 'esquecido').length; }
+
+  get pctAdesaoMes(): number {
+    const tomados = this.registros.filter(r => r.acao === 'tomado').length;
+    const total   = this.registros.filter(r => r.acao !== 'adiado').length;
+    return total === 0 ? 0 : Math.round((tomados / total) * 100);
+  }
+
+  get badgeAdesao(): string {
+    const p = this.pctAdesaoMes;
+    if (p >= 80) return 'Boa adesão';
+    if (p >= 50) return 'Adesão regular';
+    return 'Baixa adesão';
+  }
+
+  get badgeAdesaoCor(): string {
+    const p = this.pctAdesaoMes;
+    if (p >= 80) return 'verde';
+    if (p >= 50) return 'laranja';
+    return 'vermelho';
+  }
+
+  get semana(): { l: string; n: number; s: 't' | 'e' | 'p' }[] {
+    const letras = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+    return Array.from({ length: 7 }, (_, i) => {
+      const dia = new Date();
+      dia.setDate(dia.getDate() - 6 + i);
+      dia.setHours(0, 0, 0, 0);
+      const fim = new Date(dia);
+      fim.setHours(23, 59, 59, 999);
+
+      const doDia = this.registros.filter(r => {
+        const t = this.toDate(r.dataHora).getTime();
+        return t >= dia.getTime() && t <= fim.getTime();
+      });
+
+      let s: 't' | 'e' | 'p' = 'p';
+      if (doDia.some(r => r.acao === 'tomado'))         s = 't';
+      else if (doDia.some(r => r.acao === 'esquecido')) s = 'e';
+
+      return { l: letras[dia.getDay()], n: dia.getDate(), s };
+    });
+  }
+
+  get listaFormatada(): { nome: string; det: string; s: 't' | 'e' }[] {
+    return this.registros
+      .filter(r => r.acao !== 'adiado')
+      .slice(0, 20)
+      .map(r => ({
+        nome: `${r.icone} ${r.nome}`,
+        det:  this.formatarDataHora(r.dataHora),
+        s:    r.acao === 'tomado' ? 't' : 'e',
+      }));
+  }
+
+  ngOnInit() {
+    this.sub = this.service.listarHistoricoRemedios(30).subscribe({
+      next: dados => {
+        this.registros = [...dados];
+        this.cdr.detectChanges();
+      },
+      error: err => console.error('ERRO:', err)
+    });
+  }
+
+  ngOnDestroy() { this.sub?.unsubscribe(); }
+
+  private toDate(ts: Timestamp | any): Date {
+    if (ts?.seconds) return new Date(ts.seconds * 1000);
+    if (ts?.toDate)  return ts.toDate();
+    return new Date(ts);
+  }
+
+  private formatarDataHora(ts: Timestamp | any): string {
+    const d     = this.toDate(ts);
+    const hoje  = new Date();
+    const ontem = new Date();
+    ontem.setDate(ontem.getDate() - 1);
+
+    const hora = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+    if (d.toDateString() === hoje.toDateString())  return `Hoje · ${hora}`;
+    if (d.toDateString() === ontem.toDateString()) return `Ontem · ${hora}`;
+    return `${d.toLocaleDateString('pt-BR')} · ${hora}`;
+  }
+
   gerarPDF() {
-    alert('Gerando PDF de remédios... (integrar com jsPDF)');
+    alert('Gerando PDF de remédios... (em breve)');
   }
 }

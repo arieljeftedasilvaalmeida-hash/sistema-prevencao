@@ -1,16 +1,23 @@
 <div class="aba-exames">
 
-  <!-- área de upload -->
-  <div class="upload" (click)="uploadExame()">
-    <span class="upload-emoji">📎</span>
-    <h2 class="upload-titulo">Adicionar exame</h2>
-    <p class="upload-sub">Tire uma foto ou selecione um PDF</p>
+  <div class="upload" (click)="uploadExame()" [class.enviando]="enviando">
+    <span class="upload-emoji">{{ enviando ? '⏳' : '📎' }}</span>
+    <h2 class="upload-titulo">{{ enviando ? 'Enviando...' : 'Adicionar exame' }}</h2>
+    <p class="upload-sub">{{ enviando ? 'Aguarde' : 'Tire uma foto ou selecione um PDF' }}</p>
   </div>
 
-  <!-- exames salvos -->
   <p class="sec-titulo">Exames salvos</p>
+
+  <div *ngIf="carregando" style="text-align:center; padding: 24px; color:#888">⏳ Carregando...</div>
+
+  <div class="lista-vazia" *ngIf="!carregando && examesFormatados.length === 0">
+    <p style="text-align:center; color:#888; padding: 24px 0;">
+      Nenhum exame salvo ainda. Toque acima para adicionar. 📂
+    </p>
+  </div>
+
   <div class="lista">
-    <div class="item" *ngFor="let ex of exames">
+    <div class="item" *ngFor="let ex of examesFormatados">
       <span class="exame-icon">{{ ex.icon }}</span>
       <div class="item-info">
         <h2 class="item-nome">{{ ex.nome }}</h2>

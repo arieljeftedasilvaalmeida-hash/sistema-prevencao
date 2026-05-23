@@ -1,154 +1,144 @@
 <div class="tela-home">
- 
-  <!-- cabecalho -->
-  <header class="cabecalho">
-    <h2 class="next-med">Próxima medicação<br>em 15 minutos</h2>
+
+  <header class="cabecalho" [class.urgente]="cabecalhoUrgente">
+    <h2 class="next-med">{{ textoProximaMedicacao }}</h2>
   </header>
- 
-  <!-- lista de medicamentos -->
+
   <main class="med-list">
- 
-    <!-- Card (ativo — mostra botões) -->
-    <div class="med-card ativo">
 
-        <!-- informações no topo do card -->  
+    <div class="lista-vazia" *ngIf="carregando">
+      <span class="vazia-emoji">⏳</span>
+      <p class="vazia-txt">Carregando...</p>
+    </div>
+
+    <div class="lista-vazia" *ngIf="!carregando && medicamentos.length === 0">
+      <span class="vazia-emoji">💊</span>
+      <p class="vazia-txt">Nenhum medicamento cadastrado ainda.</p>
+      <p class="vazia-sub">Toque no + para adicionar.</p>
+    </div>
+
+    <ng-container *ngIf="!carregando">
+      <div class="med-card"
+           *ngFor="let med of medicamentosOrdenados"
+           [class.ativo]="ativo?.id === med.id"
+           [class.expandido]="med.id === expandido"
+           (click)="toggleExpandir(med.id)">
+
         <div class="card-top">
-
-            <!-- nome do medicamento e ícone -->
-            <div class="med-nome">
-
-            <h2 class="nome">DIPIRONA</h2>
-            <span class="med-icon">💊</span>
-
-            </div>
-
+          <div class="med-nome">
+            <h2 class="nome">{{ med.nome | uppercase }}</h2>
+            <span class="med-icon">{{ med.icone }}</span>
+          </div>
         </div>
 
-        <!-- hora e check -->
         <div class="hora-e-check">
-
-            <!-- hora da medicação -->
-            <p class="med-time">10:00</p>
-
-            <!-- dia da semana & botão de Check-->
-            <div class="med-right">
-
-                <!-- dia da semana -->  
-                <p class="med-days">D S T Q Q S S</p>
-
-                <!-- botão de Check-->
-                <label class="toggle">
-
-                    <input type="checkbox" checked>
-                    <span class="slider"></span>
-
-                </label>
-
-            </div>
-
-        </div>
-      
-
-        
-        <!-- botões tomar e adiar -->
-        <div class="actions-bottom">
-
-          <button class="btn btn-take">Tomar</button>
-          <button class="btn btn-snooze">Adiar</button>
-          
+          <p class="med-time">{{ med.horario }}</p>
+          <div class="med-right">
+            <p class="med-days">{{ formatarDias(med.dias) }}</p>
+            <label class="toggle" (click)="$event.stopPropagation()">
+              <input type="checkbox" [checked]="med.ativo !== false">
+              <span class="slider"></span>
+            </label>
+          </div>
         </div>
 
+        <div class="card-detalhes" *ngIf="med.id === expandido"
+             (click)="$event.stopPropagation()">
 
-    </div>
- 
-    <!-- Card -->
-    <div class="med-card">
-      
-      <!-- informações no topo do card -->  
-      <div class="card-top">
+          <div class="detalhe-linha" *ngIf="med.dosagem">
+            <p class="detalhe-label">Dosagem</p>
+            <p class="detalhe-valor">{{ med.dosagem }}</p>
+          </div>
 
-        <!-- nome do medicamento e ícone -->
-        <div class="med-nome">
+          <div class="detalhe-linha" *ngIf="med.obs">
+            <p class="detalhe-label">Observações</p>
+            <p class="detalhe-valor">{{ med.obs }}</p>
+          </div>
 
-          <h2 class="nome">ROACUTAN</h2>
-          <span class="med-icon">💊</span>
+          <div class="card-acoes">
+            <button class="btn-acao editar"  (click)="abrirEdicao(med)">✏️ Editar</button>
+            <button class="btn-acao excluir" (click)="excluir(med)">🗑️ Excluir</button>
+          </div>
 
         </div>
 
-        <!-- dia da semana & botão de Check-->
-        <div class="med-right">
-
-          <!-- dia da semana -->  
-          <p class="med-days">D T Q S</p>
-
-          <!-- botão de Check-->
-          <label class="toggle">
-
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-
-          </label>
-
+        <div class="actions-bottom" *ngIf="ativo?.id === med.id"
+             (click)="$event.stopPropagation()">
+          <button class="btn btn-take"   (click)="tomar(med)">Tomar</button>
+          <button class="btn btn-snooze" (click)="adiar(med)">Adiar</button>
         </div>
 
       </div>
+    </ng-container>
 
-      <!-- hora da medicação -->
-      <div class="card-hora">
-
-        <p class="med-time">18:15</p>
-
-      </div>
-
-    </div>
- 
-    <!-- Card -->
-    <div class="med-card">
-
-      <!-- informações no topo do card -->  
-      <div class="card-top">
-
-        <!-- nome do medicamento e ícone -->
-        <div class="med-nome">
-
-          <h2 class="nome">XULTOPHY</h2>
-          <span class="med-icon">💉</span>
-
-        </div>
-
-        <!-- dia da semana & botão de Check-->
-        <div class="med-right">
-
-          <!-- dia da semana -->
-          <p class="med-days">D S T Q Q S S</p>
-
-          <!-- botão de Check-->
-          <label class="toggle">
-
-            <input type="checkbox">
-            <span class="slider"></span>
-
-          </label>
-
-        </div>
-
-      </div>
-
-      <!-- hora da medicação -->
-      <div class="card-hora">
-
-        <p class="med-time">09:50</p>
-
-      </div>
-
-    </div>
- 
   </main>
- 
-  <!-- rodapé de navegação -->
+
+  <div class="modal-overlay" *ngIf="modalEdicao" (click)="fecharEdicao()">
+    <div class="modal" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h2 class="modal-titulo">✏️ Editar Medicamento</h2>
+        <button class="modal-fechar" (click)="fecharEdicao()">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="campo">
+          <label class="campo-label">Nome do medicamento</label>
+          <input class="campo-input" type="text" [(ngModel)]="formEdicao.nome">
+        </div>
+
+        <div class="campo">
+          <label class="campo-label">Ícone</label>
+          <div class="icone-grid">
+            <button class="icone-btn"
+                    *ngFor="let ic of icones"
+                    [class.selecionado]="formEdicao.icone === ic"
+                    (click)="formEdicao.icone = ic">
+              {{ ic }}
+            </button>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label class="campo-label">Dosagem</label>
+          <input class="campo-input" type="text" [(ngModel)]="formEdicao.dosagem">
+        </div>
+
+        <div class="campo">
+          <label class="campo-label">Horário</label>
+          <input class="campo-input" type="time" [(ngModel)]="formEdicao.horario">
+        </div>
+
+        <div class="campo">
+          <label class="campo-label">Dias da semana</label>
+          <div class="dias-grid">
+            <button class="dia-btn"
+                    *ngFor="let d of diasSemana"
+                    [class.selecionado]="formEdicao.dias.includes(d.valor)"
+                    (click)="toggleDia(d.valor)">
+              {{ d.letra }}
+            </button>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label class="campo-label">Observações</label>
+          <textarea class="campo-input campo-textarea" [(ngModel)]="formEdicao.obs"></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancelar" (click)="fecharEdicao()">Cancelar</button>
+        <button class="btn-salvar"   (click)="salvarEdicao()">Salvar</button>
+      </div>
+
+    </div>
+  </div>
+
   <footer class="bottom-rodape">
- 
-    <!-- Home → rota "/" -->
+
     <button class="rodape-btn"
             routerLink="/"
             routerLinkActive="active"
@@ -156,39 +146,35 @@
             aria-label="Home">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </button>
- 
-    <!-- Vacinas → rota "/vacinas" -->
+
     <button class="rodape-btn"
             routerLink="/vacinas"
             routerLinkActive="active"
             aria-label="Vacinas">
       <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8.624 2.758L7.125 4.257L5.384 2.515l1.448-1.448L5.765-.001L0 5.764l1.067 1.067l1.448-1.448l1.742 1.742l-1.499 1.499l12.96 12.96l5.399.124l2.289 2.289l1.054-.114l-2.758-2.758l-.124-5.399zm0 1.708l6.584 6.584l-4.148 4.148l-1.676-1.674l2.08-2.08l-.88-.88l-2.08 2.08l-1.55-1.55l2.08-2.08l-.88-.88l-2.08 2.08L4.48 8.62z"/></svg>
     </button>
- 
-    <!-- Adicionar → rota "/medicamentos" -->
+
     <button class="rodape-btn add-btn"
             routerLink="/medicamentos"
             routerLinkActive="active"
             aria-label="Adicionar">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
     </button>
- 
-    <!-- Histórico → rota "/historico" -->
+
     <button class="rodape-btn"
             routerLink="/historico"
             routerLinkActive="active"
             aria-label="Histórico">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
     </button>
- 
-    <!-- Perfil → rota "/perfil" -->
+
     <button class="rodape-btn"
             routerLink="/perfil"
             routerLinkActive="active"
             aria-label="Perfil">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
     </button>
- 
+
   </footer>
- 
+
 </div>
