@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MedicamentoService, RegistroRemedio } from '../../../services/medicamento.service';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-historico-remedios',
@@ -36,10 +38,21 @@ export class HistoricoRemedios implements OnInit, OnDestroy {
   get esquecidosSemana(): number { return this.registrosSemana.filter(r => r.acao === 'esquecido').length; }
 
   get pctAdesaoMes(): number {
-    const tomados = this.registros.filter(r => r.acao === 'tomado').length;
-    const total   = this.registros.filter(r => r.acao !== 'adiado').length;
-    return total === 0 ? 0 : Math.round((tomados / total) * 100);
-  }
+
+  const tomados = this.registros.filter(
+    r => r.acao === 'tomado'
+  ).length;
+
+  const esquecidos = this.registros.filter(
+    r => r.acao === 'esquecido'
+  ).length;
+
+  const total = tomados + esquecidos;
+
+  return total === 0
+    ? 0
+    : Math.round((tomados / total) * 100);
+}
 
   get badgeAdesao(): string {
     const p = this.pctAdesaoMes;
@@ -120,6 +133,37 @@ export class HistoricoRemedios implements OnInit, OnDestroy {
   }
 
   gerarPDF() {
-    alert('Gerando PDF de remédios... (em breve)');
+
+    const pdf = new jsPDF();
+
+    // Título
+    pdf.setFontSize(20);
+    pdf.text('Relatório de Medicamentos', 14, 20);
+
+    // Informações gerais
+    pdf.setFontSize(12);
+
+    pdf.text(`Adesão do mês: ${this.pctAdesaoMes}%`, 14, 35);
+    pdf.text(`Tomados esta semana: ${this.tomadosSemana}`, 14, 43);
+    pdf.text(`Esquecidos esta semana: ${this.esquecidosSemana}`, 14, 51);
+
+    // Dados da tabela
+    const dados = this.registros
+      .filter(r => r.acao !== 'adiado')
+      .map(r => [
+        r.nome,
+        r.acao === 'tomado' ? 'Tomado' : 'Esquecido',
+        this.formatarDataHora(r.dataHora)
+      ]);
+
+    // Tabela
+    autoTable(pdf, {
+      startY: 65,
+      head: [['Medicamento', 'Status', 'Data/Hora']],
+      body: dados,
+    });
+
+    // Nome do arquivo
+    pdf.save('relatorio-medicamentos.pdf');
   }
 }

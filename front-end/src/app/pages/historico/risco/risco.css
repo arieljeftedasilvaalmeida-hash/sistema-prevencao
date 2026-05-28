@@ -18,7 +18,7 @@
 }
 .card-risco.baixo { background: rgba(39,174,96,0.10);  border-left-color: #27ae60; }
 .card-risco.medio { background: rgba(243,156,18,0.10); border-left-color: #f39c12; }
-.card-risco.alto  { background: rgba(231,76,60,0.10);  border-left-color: #e74c3c; }
+.card-risco.alto  { background: rgba(231,76,60,0.10);  border-left-color: var(--color-secondary); }
 
 .risco-topo  { display: flex; align-items: center; gap: 12px; }
 .risco-emoji { font-size: 2rem; }
@@ -36,7 +36,7 @@
 }
 .termo.on-verde { background: #27ae60; color: #fff; }
 .termo.on-lar   { background: #f39c12; color: #fff; }
-.termo.on-verm  { background: #e74c3c; color: #fff; }
+.termo.on-verm  { background: var(--color-secondary); color: #fff; }
 
 /* seção */
 .sec-titulo {
@@ -54,7 +54,7 @@
   background: var(--color-gray); border-radius: 12px;
   padding: 11px 13px; border-left: 3px solid transparent;
 }
-.fator.neg { border-left-color: #e74c3c; }
+.fator.neg { border-left-color: var(--color-secondary); }
 .fator.pos { border-left-color: #27ae60; }
 
 .fator-emoji { font-size: 1.1rem; flex-shrink: 0; }
@@ -70,7 +70,7 @@
 }
 .badge.verde { background: rgba(39,174,96,0.15);  color: #27ae60; }
 .badge.lar   { background: rgba(243,156,18,0.15); color: #e67e22; }
-.badge.verm  { background: rgba(231,76,60,0.13);  color: #e74c3c; }
+.badge.verm  { background: rgba(231,76,60,0.13);  color: var(--color-secondary); }
 
 /* recomendação */
 .rec {

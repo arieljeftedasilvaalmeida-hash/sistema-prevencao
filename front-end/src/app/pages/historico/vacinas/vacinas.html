@@ -7,7 +7,7 @@
       <h2 class="r-num">{{ emDia.length }}</h2>
       <p class="r-sub">vacinas</p>
     </div>
-    <div class="card-resumo verm">
+    <div class="card-resumo roxo">
       <p class="r-label">Atrasadas</p>
       <h2 class="r-num">{{ atrasadas.length }}</h2>
       <p class="r-sub">vacinas</p>
@@ -24,16 +24,26 @@
 
   <div class="lista">
     <div class="item" *ngFor="let v of listaFormatada">
-      <div class="item-ico" [class.t]="v.s === 't'" [class.e]="v.s === 'e'">
+
+      <!-- Ícone: ✓ tomada | ! atrasada -->
+      <div class="item-ico"
+           [class.t]="v.s === 't'"
+           [class.e]="v.s === 'a'">
         {{ v.s === 't' ? '✓' : '!' }}
       </div>
+
       <div class="item-info">
         <h2 class="item-nome">{{ v.nome }}</h2>
         <p class="item-det">{{ v.det }}</p>
       </div>
-      <span class="badge" [class.azul]="v.s === 't'" [class.verm]="v.s === 'e'">
+
+      <!-- Badge: Em dia | Atrasada -->
+      <span class="badge"
+            [class.azul]="v.s === 't'"
+            [class.roxo]="v.s === 'a'">
         {{ v.s === 't' ? 'Em dia' : 'Atrasada' }}
       </span>
+
     </div>
   </div>
 

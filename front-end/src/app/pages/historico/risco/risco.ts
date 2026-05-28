@@ -3,6 +3,8 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { MedicamentoService, RegistroRemedio } from '../../../services/medicamento.service';
 import { Subscription } from 'rxjs';
 import { Timestamp } from '@angular/fire/firestore';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface Fator {
   emoji: string;
@@ -133,6 +135,121 @@ export class HistoricoRisco implements OnInit, OnDestroy {
   }
 
   gerarPDF() {
-    alert('Gerando relatório de risco PDF... (em breve)');
+
+    const pdf = new jsPDF();
+
+    // ─────────────────────────────
+    // Título
+    // ─────────────────────────────
+
+    pdf.setFontSize(22);
+    pdf.text('Relatório de Risco', 14, 20);
+
+    pdf.setFontSize(12);
+
+    pdf.text(
+      `Gerado em: ${new Date().toLocaleDateString('pt-BR')}`,
+      14,
+      30
+    );
+
+    // ─────────────────────────────
+    // Nível de risco
+    // ─────────────────────────────
+
+    pdf.setFontSize(16);
+    pdf.text(`Nível atual: ${this.nivelRisco}`, 14, 45);
+
+    let descricao = '';
+
+    if (this.nivelClasse === 'baixo') {
+      descricao = 'O paciente apresenta boa adesão ao tratamento.';
+    }
+
+    if (this.nivelClasse === 'medio') {
+      descricao = 'Há pontos de atenção que precisam de acompanhamento.';
+    }
+
+    if (this.nivelClasse === 'alto') {
+      descricao = 'O paciente apresenta risco elevado e precisa de atenção.';
+    }
+
+    pdf.setFontSize(11);
+
+    const texto = pdf.splitTextToSize(descricao, 180);
+
+    pdf.text(texto, 14, 55);
+
+    // ─────────────────────────────
+    // Fatores identificados
+    // ─────────────────────────────
+
+    const fatoresTabela = this.fatores.map(f => [
+      f.nome,
+      f.desc,
+      f.nivel.toUpperCase(),
+      f.pos ? 'Positivo' : 'Negativo'
+    ]);
+
+    autoTable(pdf, {
+      startY: 70,
+      head: [[
+        'Fator',
+        'Descrição',
+        'Nível',
+        'Tipo'
+      ]],
+      body: fatoresTabela,
+    });
+
+    // ─────────────────────────────
+    // Recomendações
+    // ─────────────────────────────
+
+    let y = (pdf as any).lastAutoTable.finalY + 15;
+
+    pdf.setFontSize(16);
+    pdf.text('Recomendações', 14, y);
+
+    y += 10;
+
+    pdf.setFontSize(11);
+
+    this.recomendacoes.forEach((r, i) => {
+
+      const linhas = pdf.splitTextToSize(
+        `${i + 1}. ${r}`,
+        180
+      );
+
+      pdf.text(linhas, 14, y);
+
+      y += linhas.length * 7;
+    });
+
+    // ─────────────────────────────
+    // Rodapé
+    // ─────────────────────────────
+
+    const paginas = (pdf as any).internal.getNumberOfPages();
+
+    for (let i = 1; i <= paginas; i++) {
+
+      pdf.setPage(i);
+
+      pdf.setFontSize(10);
+
+      pdf.text(
+        'Relatório gerado automaticamente pelo sistema de monitoramento de saúde',
+        14,
+        pdf.internal.pageSize.height - 10
+      );
+    }
+
+    // ─────────────────────────────
+    // Download
+    // ─────────────────────────────
+
+    pdf.save('relatorio-risco.pdf');
   }
 }

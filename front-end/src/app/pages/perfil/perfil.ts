@@ -13,8 +13,8 @@ export class Perfil {
  
   // dados do usuário
   usuario = {
-    nome:          'Ariel Jéfte',
-    email:         'ariel.jefte@email.com',
+    nome:          'Usuário',
+    email:         'usuario@email.com',
     idade:         19,
     tipoSanguineo: 'O+',
     peso:          70,

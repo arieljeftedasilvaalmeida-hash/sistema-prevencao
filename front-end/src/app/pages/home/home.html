@@ -1,3 +1,4 @@
+<!-- home.html -->
 <div class="tela-home">
 
   <header class="cabecalho" [class.urgente]="cabecalhoUrgente">
@@ -21,6 +22,7 @@
       <div class="med-card"
            *ngFor="let med of medicamentosOrdenados"
            [class.ativo]="ativo?.id === med.id"
+           [class.inativo]="med.ativo === false"
            [class.expandido]="med.id === expandido"
            (click)="toggleExpandir(med.id)">
 
@@ -32,13 +34,18 @@
         </div>
 
         <div class="hora-e-check">
-          <p class="med-time">{{ med.horario }}</p>
+          <p class="med-time">{{ horarioExibido(med) }}</p>
           <div class="med-right">
             <p class="med-days">{{ formatarDias(med.dias) }}</p>
+
+            <!-- ✅ Toggle funcional: chama toggleAtivo() e salva no Firebase -->
             <label class="toggle" (click)="$event.stopPropagation()">
-              <input type="checkbox" [checked]="med.ativo !== false">
+              <input type="checkbox"
+                     [checked]="med.ativo !== false"
+                     (change)="toggleAtivo(med, $event)">
               <span class="slider"></span>
             </label>
+
           </div>
         </div>
 
@@ -62,7 +69,9 @@
 
         </div>
 
-        <div class="actions-bottom" *ngIf="ativo?.id === med.id"
+        <!-- ✅ Botões Tomar/Adiar: só aparecem no dia certo, faltando ≤30min, e se não tomou hoje -->
+        <div class="actions-bottom"
+             *ngIf="deveMostrarAcoes(med)"
              (click)="$event.stopPropagation()">
           <button class="btn btn-take"   (click)="tomar(med)">Tomar</button>
           <button class="btn btn-snooze" (click)="adiar(med)">Adiar</button>
@@ -73,6 +82,7 @@
 
   </main>
 
+  <!-- Modal de edição -->
   <div class="modal-overlay" *ngIf="modalEdicao" (click)="fecharEdicao()">
     <div class="modal" (click)="$event.stopPropagation()">
 

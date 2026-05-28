@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -17,6 +17,7 @@ export class Vacinas implements OnInit, OnDestroy {
 
   private service   = inject(MedicamentoService);
   private firestore = inject(Firestore);
+  private cdr       = inject(ChangeDetectorRef);
 
   abaAtiva:  'tomadas' | 'pendentes' = 'tomadas';
   tomadas:   any[] = [];
@@ -41,6 +42,7 @@ export class Vacinas implements OnInit, OnDestroy {
     this.sub = this.service.listarVacinas().subscribe((dados: any[]) => {
       this.tomadas   = dados.filter(v => v.status === 'tomada');
       this.pendentes = dados.filter(v => v.status === 'pendente' || v.status === 'atrasada');
+      this.cdr.detectChanges();
     });
   }
 
